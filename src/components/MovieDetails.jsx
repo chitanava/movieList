@@ -1,6 +1,10 @@
 import Poster from "./Poster.jsx";
+import StarRating from "./StarRating.jsx";
+import {useState} from "react";
 
 export default function MovieDetails({movie, onCloseSelectedMovie}) {
+    const [userRating, setUserRating] = useState(null);
+
     const {
         Title: title,
         Year: year,
@@ -47,8 +51,12 @@ export default function MovieDetails({movie, onCloseSelectedMovie}) {
                 </div>
 
                 <ul className='flex gap-2'>
-                    {genre.split(',').map(g => <li
-                        className='border border-base-content/40 rounded-full px-3 py-0.5 text-sm'>{g}</li>)}
+                    {genre.split(',').map((g, i) =>
+                        <li
+                            key={i}
+                            className='border border-base-content/40 rounded-full px-3 py-0.5 text-sm'>
+                            {g}
+                        </li>)}
                 </ul>
             </div>
         </div>
@@ -58,36 +66,16 @@ export default function MovieDetails({movie, onCloseSelectedMovie}) {
 
             <div className='bg-base-content/20 p-6 rounded-lg'>
                 <div className='mb-6 flex gap-2 justify-center items-center'>
-                    <div className="rating">
-                        <input type="radio" name="rating-2" checked
-                               className="mask mask-star-2 bg-orange-400" aria-label="1 star"/>
-                        <input type="radio" name="rating-2"
-                               className="mask mask-star-2 bg-orange-400" aria-label="2 star"/>
-                        <input type="radio" name="rating-2"
-                               className="mask mask-star-2 bg-orange-400" aria-label="3 star"/>
-                        <input type="radio" name="rating-2"
-                               className="mask mask-star-2 bg-orange-400" aria-label="4 star"/>
-                        <input type="radio" name="rating-2"
-                               className="mask mask-star-2 bg-orange-400" aria-label="5 star"/>
-                        <input type="radio" name="rating-2"
-                               className="mask mask-star-2 bg-orange-400" aria-label="6 star"/>
-                        <input type="radio" name="rating-2"
-                               className="mask mask-star-2 bg-orange-400" aria-label="7 star"/>
-                        <input type="radio" name="rating-2"
-                               className="mask mask-star-2 bg-orange-400" aria-label="8 star"/>
-                        <input type="radio" name="rating-2"
-                               className="mask mask-star-2 bg-orange-400" aria-label="9 star"/>
-                        <input type="radio" name="rating-2"
-                               className="mask mask-star-2 bg-orange-400" aria-label="10 star"/>
-                    </div>
+                    <StarRating onSetRating={num => setUserRating(num)}/>
+
                     <div className='flex items-center gap-0.5'>
-                        <span className='font-bold text-xl'>0</span>
+                        <span className='font-bold text-xl'>{userRating ?? `0`}</span>
                         <span className='text-base-content text-sm opacity-70'>/</span>
                         <span className='text-base-content text-sm opacity-70'>10</span>
                     </div>
                 </div>
 
-                <button className="btn btn-primary btn-block">Add to list</button>
+                <button disabled={!userRating} className="btn btn-primary btn-block">Add to list</button>
             </div>
 
             <div className="divider">OR</div>
