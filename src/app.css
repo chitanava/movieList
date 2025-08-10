@@ -1,7 +1,9 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme=night], [data-theme=night] *));
+
 @plugin "daisyui" {
-    themes: light --default, night --prefersdark, cupcake;
+    themes: night, cupcake;
 }
 
 .grotesk-regular {

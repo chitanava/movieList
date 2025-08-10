@@ -1,12 +1,21 @@
+import {useEffect, useState} from "react";
+
 export default function ThemeToggle() {
+    const [dark, setDark] = useState(true)
+
+    useEffect(() => {
+        document.documentElement.setAttribute('data-theme', dark ? 'night' : 'cupcake')
+    }, [dark])
+
     return (
         <label className="justify-self-end swap swap-rotate">
             {/* this hidden checkbox controls the state */}
-            <input type="checkbox" className="theme-controller" value="synthwave"/>
+            <input type="checkbox" className="theme-controller" checked={dark}
+                   onChange={() => setDark((d) => !d)}/>
 
             {/* sun icon */}
             <svg
-                className="swap-off h-6 w-6 fill-current"
+                className="swap-on h-6 w-6 fill-current"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24">
                 <path
@@ -15,7 +24,7 @@ export default function ThemeToggle() {
 
             {/* moon icon */}
             <svg
-                className="swap-on h-6 w-6 fill-current"
+                className="swap-off h-6 w-6 fill-current"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24">
                 <path
