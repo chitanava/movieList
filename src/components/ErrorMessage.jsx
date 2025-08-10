@@ -1,4 +1,4 @@
-export default function Error() {
+export default function ErrorMessage() {
     return (
         <div className='flex flex-col h-full items-center justify-center gap-2'>
             <div className='text-error'>
