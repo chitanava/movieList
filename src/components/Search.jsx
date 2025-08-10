@@ -1,21 +1,21 @@
 import {useEffect, useRef} from "react";
 
-export default function Search() {
+export default function Search({query, onSearch}) {
     const inputRef = useRef(null);
 
     useEffect(() => {
         function callback(e) {
-            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
                 e.preventDefault();
 
                 inputRef.current.focus();
             }
         }
 
-        document.documentElement.addEventListener('keydown', callback)
+        document.documentElement.addEventListener("keydown", callback)
 
         return () => {
-            document.documentElement.removeEventListener('keydown', callback)
+            document.documentElement.removeEventListener("keydown", callback)
         }
     }, [])
 
@@ -33,7 +33,11 @@ export default function Search() {
                     <path d="m21 21-4.3-4.3"></path>
                 </g>
             </svg>
-            <input ref={inputRef} type="search" className="grow" placeholder="Search"/>
+            <input value={query}
+                   onChange={(e) => onSearch(e.target.value)}
+                   ref={inputRef} type="search"
+                   className="grow"
+                   placeholder="Search"/>
             <kbd className="kbd kbd-sm">⌘ K</kbd>
         </label>
     );
