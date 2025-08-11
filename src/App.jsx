@@ -9,7 +9,6 @@ import Box from "./components/Box.jsx";
 import Layout from "./components/Layout.jsx";
 import MovieList from "./components/MovieList.jsx";
 import Stats from "./components/Stats.jsx";
-import WatchedList from "./components/WatchedList.jsx";
 import Loader from "./components/Loader.jsx";
 import NoResults from "./components/NoResults.jsx";
 import SelectedMovie from "./components/SelectedMovie.jsx";
@@ -20,6 +19,7 @@ import useMovies from "./hooks/useMovies.js";
 export default function App() {
     const [query, setQuery] = useState("interstellar");
     const [selectedMovieID, setSelectedMovieID] = useState(null);
+    const [watched, setWatched] = useState([]);
 
     function handleSearch(value) {
         setQuery(value);
@@ -29,8 +29,22 @@ export default function App() {
         setSelectedMovieID(imdbID);
     }
 
-    function handleCloseSelectedMovie() {
+    function handleCloseMovie() {
         setSelectedMovieID(null);
+    }
+
+    function handleAddMovie(movie) {
+        const isWatched = watched.map(movie => movie.imdbID).includes(movie.imdbID)
+
+        if (isWatched) {
+            return;
+        }
+
+        setWatched((watched) => [...watched, movie]);
+    }
+
+    function handleUpdateMovie(movie) {
+        setWatched(watched => watched.map(w => w.imdbID === movie.imdbID ? {...w, userRating: movie.userRating} : w));
     }
 
     const {movies, loading, error} = useMovies(query);
@@ -59,7 +73,11 @@ export default function App() {
                     {!selectedMovieID && <NoResults/>}
                     {selectedMovieID &&
                         <SelectedMovie selectedMovieID={selectedMovieID}
-                                       onCloseSelectedMovie={handleCloseSelectedMovie}/>}
+                                       onCloseMovie={handleCloseMovie}
+                                       onAddMovie={handleAddMovie}
+                                       watched={watched}
+                                       onUpdateMovie={handleUpdateMovie}
+                        />}
                 </Box>
             </PageContent>
         </Layout>

@@ -2,7 +2,7 @@ import Poster from "./Poster.jsx";
 import StarRating from "./StarRating.jsx";
 import {useState} from "react";
 
-export default function MovieDetails({movie, onCloseSelectedMovie}) {
+export default function MovieDetails({movie, onCloseMovie, onAddMovie, isWatched, watchedUserRating, onUpdateMovie}) {
     const [userRating, setUserRating] = useState(null);
 
     const {
@@ -25,6 +25,30 @@ export default function MovieDetails({movie, onCloseSelectedMovie}) {
         BoxOffice: boxOffice,
     } = movie
 
+    function handleAdd() {
+        const movie = {
+            imdbID,
+            title,
+            year,
+            poster,
+            imdbRating,
+            runtime,
+            userRating,
+        }
+
+        onAddMovie(movie);
+
+        onCloseMovie();
+    }
+
+    function handleUpdate() {
+        const movie = {
+            imdbID,
+            userRating,
+        }
+
+        onUpdateMovie(movie);
+    }
 
     return (<div className='space-y-6 p-6'>
         <div className='flex'>
@@ -64,24 +88,36 @@ export default function MovieDetails({movie, onCloseSelectedMovie}) {
         <div className='px-12 space-y-6'>
             <p className=''>{plot}</p>
 
-            <div className='bg-base-content/20 p-6 rounded-lg'>
-                <div className='mb-6 flex gap-2 justify-center items-center'>
-                    <StarRating onSetRating={num => setUserRating(num)}/>
+            <div className='bg-base-content/20 p-6 rounded-lg space-y-6'>
+                {isWatched && <div role="alert" className="alert alert-info alert-soft justify-center">
+                    <span>You have already rated this movie {watchedUserRating} stars!</span>
+                </div>}
+
+                <div className='flex gap-2 justify-center items-center'>
+                    <StarRating onSetRating={num => setUserRating(num)} defaultRating={watchedUserRating ?? 0}/>
 
                     <div className='flex items-center gap-0.5'>
-                        <span className='font-bold text-xl'>{userRating ?? `0`}</span>
+                        <span className='font-bold text-xl'>{(userRating || watchedUserRating) ?? `0`}</span>
                         <span className='text-base-content text-sm opacity-70'>/</span>
                         <span className='text-base-content text-sm opacity-70'>10</span>
                     </div>
                 </div>
 
-                <button disabled={!userRating} className="btn btn-primary btn-block">Add to list</button>
+                {isWatched ? (<button
+                    onClick={handleUpdate}
+                    disabled={!userRating || userRating === watchedUserRating}
+                    className="btn btn-primary btn-block">Update rating
+                </button>) : (<button
+                    onClick={handleAdd}
+                    disabled={!userRating}
+                    className="btn btn-primary btn-block">Add to list
+                </button>)}
             </div>
 
             <div className="divider">OR</div>
 
             <div className='rounded-lg text-center'>
-                <button className="btn btn-link text-base-content" onClick={onCloseSelectedMovie}>
+                <button className="btn btn-link text-base-content" onClick={onCloseMovie}>
                     Return to watched list
                 </button>
             </div>
