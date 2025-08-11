@@ -49,8 +49,9 @@ export default function WatchedListItem({movie, onDeleteWatched, onSelectMovie, 
                             </li>
                         </ul>
                         <ul className='flex gap-2'>
-                            {genre.split(',').map(g => <li
-                                className='border border-base-content/40 rounded-full px-3 py-0.5 text-sm'>{g.trim()}</li>)}
+                            {genre.split(',').map((g, i) => <li
+                                className='border border-base-content/40 rounded-full px-3 py-0.5 text-sm'
+                                key={i}>{g.trim()}</li>)}
                         </ul>
                     </div>
                     <button
