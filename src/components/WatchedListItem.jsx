@@ -1,6 +1,6 @@
 import Poster from "./Poster.jsx";
 
-export default function WatchedListItem({movie, onDeleteWatched, onSelectMovie}) {
+export default function WatchedListItem({movie, onDeleteWatched, onSelectMovie, index}) {
 
     const {imdbID, title, year, poster, imdbRating, runtime, userRating, genre} = movie;
 
@@ -17,9 +17,9 @@ export default function WatchedListItem({movie, onDeleteWatched, onSelectMovie})
             <div className='flex gap-4 items-center'>
                 <Poster poster={poster} title={title}/>
                 <div
-                    className='grid grid-cols-[1fr_auto] items-center w-full'>
+                    className='grid grid-cols-[1fr_auto] items-center flex-1'>
                     <div>
-                        <h2 className='font-bold text-lg mb-2'>1. {title}</h2>
+                        <h2 className='font-bold text-lg mb-2'>{index}. {title}</h2>
                         <ul className='flex gap-4 mb-6'>
                             <li><span className='text-base-content/70'>{year}</span></li>
                             <li><span className='text-base-content/70'>{runtime}</span></li>
