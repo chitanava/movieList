@@ -1,6 +1,6 @@
 import Poster from "./Poster.jsx";
 import StarRating from "./StarRating.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 export default function MovieDetails({movie, onCloseMovie, onAddMovie, isWatched, watchedUserRating, onUpdateMovie}) {
     const [userRating, setUserRating] = useState(null);
@@ -24,6 +24,14 @@ export default function MovieDetails({movie, onCloseMovie, onAddMovie, isWatched
         Type: type,
         BoxOffice: boxOffice,
     } = movie
+
+    useEffect(() => {
+        if (!title) return;
+
+        document.title = `Movilog | ${title}`;
+
+        return () => document.title = 'Movilog';
+    }, [title]);
 
     function handleAdd() {
         const movie = {
