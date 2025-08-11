@@ -12,15 +12,16 @@ import Stats from "./components/Stats.jsx";
 import Loader from "./components/Loader.jsx";
 import NoResults from "./components/NoResults.jsx";
 import SelectedMovie from "./components/SelectedMovie.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import ErrorMessage from "./components/ErrorMessage.jsx";
 import useMovies from "./hooks/useMovies.js";
 import WatchedList from "./components/WatchedList.jsx";
+import useLocalStorageState from "./hooks/useLocalStorageState.js";
 
 export default function App() {
     const [query, setQuery] = useState("interstellar");
     const [selectedMovieID, setSelectedMovieID] = useState(null);
-    const [watched, setWatched] = useState([]);
+    const [watched, setWatched] = useLocalStorageState("watched", []);
 
     function handleSearch(value) {
         setQuery(value);
@@ -55,6 +56,10 @@ export default function App() {
     }
 
     const {movies, loading, error} = useMovies(query);
+
+    useEffect(() => {
+        localStorage.setItem("watched", JSON.stringify(watched));
+    }, [watched]);
 
     return (
         <Layout>
