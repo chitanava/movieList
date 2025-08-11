@@ -1,7 +1,8 @@
 import {useEffect, useState} from "react";
+import useLocalStorageState from "../hooks/useLocalStorageState.js";
 
 export default function ThemeToggle() {
-    const [dark, setDark] = useState(true)
+    const [dark, setDark] = useLocalStorageState("dark", true);
 
     useEffect(() => {
         document.documentElement.setAttribute('data-theme', dark ? 'night' : 'cupcake')
