@@ -15,6 +15,7 @@ import SelectedMovie from "./components/SelectedMovie.jsx";
 import {useState} from "react";
 import ErrorMessage from "./components/ErrorMessage.jsx";
 import useMovies from "./hooks/useMovies.js";
+import WatchedList from "./components/WatchedList.jsx";
 
 export default function App() {
     const [query, setQuery] = useState("interstellar");
@@ -23,6 +24,8 @@ export default function App() {
 
     function handleSearch(value) {
         setQuery(value);
+
+        handleCloseMovie()
     }
 
     function handleSelectMovie(imdbID) {
@@ -47,6 +50,10 @@ export default function App() {
         setWatched(watched => watched.map(w => w.imdbID === movie.imdbID ? {...w, userRating: movie.userRating} : w));
     }
 
+    function handleDeleteWatched(imdbID) {
+        setWatched(watched => watched.filter(w => w.imdbID !== imdbID));
+    }
+
     const {movies, loading, error} = useMovies(query);
 
     return (
@@ -63,14 +70,16 @@ export default function App() {
                 <Box>
                     {loading && <Loader/>}
                     {error && <ErrorMessage/>}
-                    {!loading && !error && !movies.length > 0 && <NoResults/>}
+                    {!loading && !error && movies.length === 0 && <NoResults/>}
                     {!loading && !error && movies.length > 0 &&
                         <MovieList movies={movies} onSelectMovie={handleSelectMovie}/>}
                 </Box>
                 <Box>
                     <Stats/>
-                    {/*<WatchedList/>*/}
-                    {!selectedMovieID && <NoResults/>}
+                    {!selectedMovieID && watched.length === 0 && <NoResults/>}
+                    {!selectedMovieID && watched.length > 0 &&
+                        <WatchedList watched={watched} onDeleteWatched={handleDeleteWatched}
+                                     onSelectMovie={handleSelectMovie}/>}
                     {selectedMovieID &&
                         <SelectedMovie selectedMovieID={selectedMovieID}
                                        onCloseMovie={handleCloseMovie}

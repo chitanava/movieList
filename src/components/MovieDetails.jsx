@@ -34,6 +34,7 @@ export default function MovieDetails({movie, onCloseMovie, onAddMovie, isWatched
             imdbRating,
             runtime,
             userRating,
+            genre
         }
 
         onAddMovie(movie);
@@ -79,7 +80,7 @@ export default function MovieDetails({movie, onCloseMovie, onAddMovie, isWatched
                         <li
                             key={i}
                             className='border border-base-content/40 rounded-full px-3 py-0.5 text-sm'>
-                            {g}
+                            {g.trim()}
                         </li>)}
                 </ul>
             </div>
