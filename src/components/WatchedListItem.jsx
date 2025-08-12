@@ -1,6 +1,6 @@
 import Poster from "./Poster.jsx";
 
-export default function WatchedListItem({movie, onDeleteWatched, onSelectMovie, index}) {
+export default function WatchedListItem({movie, onDeleteWatched, onSelectMovie, index, onStep, movies}) {
 
     const {imdbID, title, year, poster, imdbRating, runtime, userRating, genre} = movie;
 
@@ -12,7 +12,11 @@ export default function WatchedListItem({movie, onDeleteWatched, onSelectMovie, 
 
     return (
         <li
-            onClick={() => onSelectMovie(imdbID)}
+            onClick={() => {
+                onSelectMovie(imdbID)
+
+                movies.length ? onStep(1) : onStep(0)
+            }}
             className='space-y-2 py-6 px-4 cursor-pointer bg-transparent hover:bg-gradient-to-t hover:from-base-content/10 hover:to-transparent'>
             <div className='flex gap-4 items-center'>
                 <Poster poster={poster} title={title}/>

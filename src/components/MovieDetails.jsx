@@ -2,7 +2,16 @@ import Poster from "./Poster.jsx";
 import StarRating from "./StarRating.jsx";
 import {useEffect, useState} from "react";
 
-export default function MovieDetails({movie, onCloseMovie, onAddMovie, isWatched, watchedUserRating, onUpdateMovie}) {
+export default function MovieDetails({
+                                         movie,
+                                         onCloseMovie,
+                                         onAddMovie,
+                                         isWatched,
+                                         watchedUserRating,
+                                         onUpdateMovie,
+                                         onStep,
+                                         movies
+                                     }) {
     const [userRating, setUserRating] = useState(null);
 
     const {
@@ -48,6 +57,8 @@ export default function MovieDetails({movie, onCloseMovie, onAddMovie, isWatched
         onAddMovie(movie);
 
         onCloseMovie();
+
+        onStep(4);
     }
 
     function handleUpdate() {
@@ -103,7 +114,11 @@ export default function MovieDetails({movie, onCloseMovie, onAddMovie, isWatched
                 </div>}
 
                 <div className='flex gap-2 justify-center items-center'>
-                    <StarRating onSetRating={num => setUserRating(num)} defaultRating={watchedUserRating ?? 0}/>
+                    <StarRating onSetRating={num => {
+                        setUserRating(num)
+
+                        !isWatched && onStep(3)
+                    }} defaultRating={watchedUserRating ?? 0}/>
 
                     <div className='flex items-center gap-0.5'>
                         <span className='font-bold text-xl'>{(userRating || watchedUserRating) ?? `0`}</span>
@@ -126,7 +141,11 @@ export default function MovieDetails({movie, onCloseMovie, onAddMovie, isWatched
             <div className="divider">OR</div>
 
             <div className='rounded-lg text-center'>
-                <button className="btn btn-link text-base-content" onClick={onCloseMovie}>
+                <button className="btn btn-link text-base-content" onClick={() => {
+                    onCloseMovie()
+
+                    movies.length ? onStep(1) : onStep(0)
+                }}>
                     Return to watched list
                 </button>
             </div>

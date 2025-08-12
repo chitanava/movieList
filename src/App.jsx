@@ -12,7 +12,7 @@ import Stats from "./components/Stats.jsx";
 import Loader from "./components/Loader.jsx";
 import NoResults from "./components/NoResults.jsx";
 import SelectedMovie from "./components/SelectedMovie.jsx";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import ErrorMessage from "./components/ErrorMessage.jsx";
 import useMovies from "./hooks/useMovies.js";
 import WatchedList from "./components/WatchedList.jsx";
@@ -22,6 +22,8 @@ export default function App() {
     const [query, setQuery] = useState("interstellar");
     const [selectedMovieID, setSelectedMovieID] = useState(null);
     const [watched, setWatched] = useLocalStorageState("watched", []);
+    const [step, setStep] = useState(0);
+    const handleStep = useCallback((value) => setStep(value), []);
 
     function handleSearch(value) {
         setQuery(value);
@@ -55,6 +57,10 @@ export default function App() {
         setWatched(watched => watched.filter(w => w.imdbID !== imdbID));
     }
 
+    // function handleStep(stepNumber) {
+    //     setStep(stepNumber);
+    // }
+
     const {movies, loading, error} = useMovies(query);
 
     useEffect(() => {
@@ -69,7 +75,7 @@ export default function App() {
                 <ThemeToggle/>
             </Header>
 
-            <Steps/>
+            <Steps curStep={step}/>
 
             <PageContent>
                 <Box>
@@ -77,20 +83,22 @@ export default function App() {
                     {error && <ErrorMessage/>}
                     {!loading && !error && movies.length === 0 && <NoResults/>}
                     {!loading && !error && movies.length > 0 &&
-                        <MovieList movies={movies} onSelectMovie={handleSelectMovie}/>}
+                        <MovieList movies={movies} onSelectMovie={handleSelectMovie} onStep={handleStep}/>}
                 </Box>
                 <Box>
                     <Stats/>
                     {!selectedMovieID && watched.length === 0 && <NoResults/>}
                     {!selectedMovieID && watched.length > 0 &&
                         <WatchedList watched={watched} onDeleteWatched={handleDeleteWatched}
-                                     onSelectMovie={handleSelectMovie}/>}
+                                     onSelectMovie={handleSelectMovie} onStep={handleStep} movies={movies}/>}
                     {selectedMovieID &&
                         <SelectedMovie selectedMovieID={selectedMovieID}
                                        onCloseMovie={handleCloseMovie}
                                        onAddMovie={handleAddMovie}
                                        watched={watched}
                                        onUpdateMovie={handleUpdateMovie}
+                                       onStep={handleStep}
+                                       movies={movies}
                         />}
                 </Box>
             </PageContent>

@@ -4,7 +4,15 @@ import ErrorMessage from "./ErrorMessage.jsx";
 import useMovieDetails from "../hooks/useMovieDetails.js";
 import {useEffect, useRef} from "react";
 
-export default function SelectedMovie({selectedMovieID, onCloseMovie, onAddMovie, watched, onUpdateMovie}) {
+export default function SelectedMovie({
+                                          selectedMovieID,
+                                          onCloseMovie,
+                                          onAddMovie,
+                                          watched,
+                                          onUpdateMovie,
+                                          onStep,
+                                          movies
+                                      }) {
     const {loading, error, movie} = useMovieDetails(selectedMovieID)
 
     const isWatched = watched.map(movie => movie.imdbID).includes(selectedMovieID);
@@ -12,5 +20,6 @@ export default function SelectedMovie({selectedMovieID, onCloseMovie, onAddMovie
 
     return (loading && <Loader/>) || (error && <ErrorMessage/>) ||
         <MovieDetails movie={movie} onCloseMovie={onCloseMovie} onAddMovie={onAddMovie} isWatched={isWatched}
-                      watchedUserRating={watchedUserRating} onUpdateMovie={onUpdateMovie}/>;
+                      watchedUserRating={watchedUserRating} onUpdateMovie={onUpdateMovie} onStep={onStep}
+                      movies={movies}/>;
 }
