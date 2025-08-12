@@ -15,7 +15,7 @@ export default function MovieListItem({movie, index, onSelectMovie, onStep}) {
                 onSelectMovie(imdbID)
                 onStep(2)
             }}
-            className='space-y-2 py-6 px-4 cursor-pointer bg-transparent hover:bg-gradient-to-t hover:from-base-content/10 hover:to-transparent'>
+            className='space-y-2 py-6 px-6 cursor-pointer bg-transparent hover:bg-gradient-to-t hover:from-base-content/10 hover:to-transparent'>
             <div className='flex gap-4 items-center'>
                 <Poster poster={poster} title={title}/>
 
