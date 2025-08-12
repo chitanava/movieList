@@ -19,7 +19,7 @@ import WatchedList from "./components/WatchedList.jsx";
 import useLocalStorageState from "./hooks/useLocalStorageState.js";
 
 export default function App() {
-    const [query, setQuery] = useState("interstellar");
+    const [query, setQuery] = useState("Dumb");
     const [selectedMovieID, setSelectedMovieID] = useState(null);
     const [watched, setWatched] = useLocalStorageState("watched", []);
     const [step, setStep] = useState(0);
@@ -86,7 +86,7 @@ export default function App() {
                         <MovieList movies={movies} onSelectMovie={handleSelectMovie} onStep={handleStep}/>}
                 </Box>
                 <Box>
-                    <Stats/>
+                    <Stats watched={watched}/>
                     {!selectedMovieID && watched.length === 0 && <NoResults/>}
                     {!selectedMovieID && watched.length > 0 &&
                         <WatchedList watched={watched} onDeleteWatched={handleDeleteWatched}
