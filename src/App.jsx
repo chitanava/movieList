@@ -46,7 +46,7 @@ export default function App() {
             return;
         }
 
-        setWatched((watched) => [...watched, movie]);
+        setWatched((watched) => [movie, ...watched]);
     }
 
     function handleUpdateMovie(movie) {
