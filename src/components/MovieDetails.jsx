@@ -72,7 +72,7 @@ export default function MovieDetails({
 
     return (<div className='space-y-6 p-6'>
         <div className='flex'>
-            <Poster poster={poster} title={title} className='rounded-md w-52 h-[19.5rem]' iconSize={12}/>
+            <Poster poster={poster} title={title} className='rounded-md w-52 h-[19.5rem]' iconSize={5}/>
 
             <div className='px-6'>
                 <h1 className='text-2xl font-bold mb-2'>{title}</h1>
