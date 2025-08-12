@@ -63,10 +63,6 @@ export default function App() {
 
     const {movies, loading, error} = useMovies(query);
 
-    useEffect(() => {
-        localStorage.setItem("watched", JSON.stringify(watched));
-    }, [watched]);
-
     return (
         <Layout>
             <Header>
